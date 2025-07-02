@@ -20,5 +20,12 @@ public:
 				throw std::invalid_argument("Must be number.");
 			}
 		}
+
+		if ((guessNumber[0] == guessNumber[1])
+			|| (guessNumber[0] == guessNumber[2])
+			|| (guessNumber[1] == guessNumber[2]))
+		{
+			throw std::invalid_argument("Must not have the same number");
+		}
 	}
 };
