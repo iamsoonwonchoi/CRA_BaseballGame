@@ -3,12 +3,22 @@
 
 using std::string;
 
+struct GuessResult
+{
+	bool solved;
+	int strikes;
+	int balls;
+};
+
 class Baseball
 {
 public:
-	void guess(const string& guessNumber)
+	Baseball(const string& guessNumber) : question(guessNumber) {}
+
+	GuessResult guess(const string& guessNumber)
 	{
 		assertIllegalArgument(guessNumber);
+		return { true, 3, 0 };
 	}
 
 private:
@@ -42,4 +52,5 @@ private:
 		return false;
 	}
 
+	string question;
 };
