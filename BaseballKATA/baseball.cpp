@@ -18,43 +18,16 @@ public:
 	GuessResult guess(const string& guessNumber)
 	{
 		assertIllegalArgument(guessNumber);
-		if (guessNumber == target)
-		{
-			return { true, 3, 0 };
-		}
+		
+		int valid_num_count = getOneTwoThreeCount(guessNumber);
+		int strike_count = getStrikeCount(guessNumber);
+		int ball_count = valid_num_count - strike_count;
 
-		if (isTwoStrike(guessNumber) == true)
-		{
-			return { false, 2, 0 };
-		}
-		
-		int cnt_strike = 0;
-		int cnt_ball = 0;
-		for (int i = 0; i < 3; i++)
-		{
-			if (guessNumber[i] == target[i]) cnt_strike++;
-			else
-			{
-				if (guessNumber[i] <= '3') cnt_ball++;
-			}
-		}
-		
-		return { false, cnt_strike, cnt_ball };
+		if (strike_count == MAX_LENGTH) return { true,MAX_LENGTH,0 };
+		return { false, strike_count,ball_count };
 	}
 
 private:
-	bool isTwoStrike(const string& guessNumber)
-	{
-		int cnt_strike = 0;
-		for (int idx = 0; idx < 3; idx++)
-		{
-			if (guessNumber[idx] == target[idx]) cnt_strike++;
-		}
-
-		if (cnt_strike == 2) return true;
-		return false;
-	}
-
 	void assertIllegalArgument(const string& guessNumber)
 	{
 		if (guessNumber.length() != 3)
@@ -85,5 +58,26 @@ private:
 		return false;
 	}
 
+	int getOneTwoThreeCount(const string& guessNumber)
+	{
+		int result = 0;
+		for (char num : guessNumber)
+		{
+			if (num >= '0' && num <= '3') result++;
+		}
+		return result;
+	}
+
+	int getStrikeCount(const string& guessNumber)
+	{
+		int result = 0;
+		for (int idx = 0; idx < MAX_LENGTH; idx++)
+		{
+			if (guessNumber[idx] == target[idx]) result++;
+		}
+		return result;
+	}
+
+	static const int MAX_LENGTH = 3;
 	string target;
 };
