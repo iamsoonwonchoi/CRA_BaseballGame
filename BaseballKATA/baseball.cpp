@@ -23,17 +23,29 @@ public:
 			return { true, 3, 0 };
 		}
 
-		if ((guessNumber[0] != target[0])
-			&& (guessNumber[1] == target[1])
-			&& (guessNumber[2] == target[2]))
+		if (isTwoStrike(guessNumber) == true)
 		{
 			return { false, 2, 0 };
 		}
+		
+
 
 		return { false, 0, 0 };
 	}
 
 private:
+	bool isTwoStrike(const string& guessNumber)
+	{
+		int cnt_strike = 0;
+		for (int idx = 0; idx < 3; idx++)
+		{
+			if (guessNumber[idx] == target[idx]) cnt_strike++;
+		}
+
+		if (cnt_strike == 2) return true;
+		return false;
+	}
+
 	void assertIllegalArgument(const string& guessNumber)
 	{
 		if (guessNumber.length() != 3)
