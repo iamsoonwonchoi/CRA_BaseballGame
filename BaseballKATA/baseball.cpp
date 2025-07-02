@@ -28,9 +28,18 @@ public:
 			return { false, 2, 0 };
 		}
 		
-
-
-		return { false, 0, 0 };
+		int cnt_strike = 0;
+		int cnt_ball = 0;
+		for (int i = 0; i < 3; i++)
+		{
+			if (guessNumber[i] == target[i]) cnt_strike++;
+			else
+			{
+				if (guessNumber[i] <= '3') cnt_ball++;
+			}
+		}
+		
+		return { false, cnt_strike, cnt_ball };
 	}
 
 private:

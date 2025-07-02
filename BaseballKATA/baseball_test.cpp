@@ -49,6 +49,13 @@ TEST_F(BaseballFixture, Case_TwoStrike)
 	checkGuess("173", false, 2, 0);
 }
 
+TEST_F(BaseballFixture, Case_OneStrikeTwoBall)
+{
+	checkGuess("321", false, 1, 2);
+	checkGuess("213", false, 1, 2);
+	checkGuess("132", false, 1, 2);
+}
+
 int main()
 {
 	testing::InitGoogleMock();
