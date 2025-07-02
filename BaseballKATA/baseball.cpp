@@ -13,15 +13,23 @@ struct GuessResult
 class Baseball
 {
 public:
-	Baseball(const string& guessNumber) : question(guessNumber) {}
+	Baseball(const string& answer) : target(answer) {}
 
 	GuessResult guess(const string& guessNumber)
 	{
 		assertIllegalArgument(guessNumber);
-		if (guessNumber == question)
+		if (guessNumber == target)
 		{
 			return { true, 3, 0 };
 		}
+
+		if ((guessNumber[0] != target[0])
+			&& (guessNumber[1] == target[1])
+			&& (guessNumber[2] == target[2]))
+		{
+			return { false, 2, 0 };
+		}
+
 		return { false, 0, 0 };
 	}
 
@@ -56,5 +64,5 @@ private:
 		return false;
 	}
 
-	string question;
+	string target;
 };
