@@ -13,16 +13,18 @@ struct GuessResult
 class Baseball
 {
 public:
-	Baseball(const string& guessNumber) : question(guessNumber) {}
+	Baseball(const string& answer) : target(answer) {}
 
 	GuessResult guess(const string& guessNumber)
 	{
 		assertIllegalArgument(guessNumber);
-		if (guessNumber == question)
-		{
-			return { true, 3, 0 };
-		}
-		return { false, 0, 0 };
+		
+		int valid_num_count = getOneTwoThreeCount(guessNumber);
+		int strike_count = getStrikeCount(guessNumber);
+		int ball_count = valid_num_count - strike_count;
+
+		if (strike_count == MAX_LENGTH) return { true,MAX_LENGTH,0 };
+		return { false, strike_count,ball_count };
 	}
 
 private:
@@ -56,5 +58,26 @@ private:
 		return false;
 	}
 
-	string question;
+	int getOneTwoThreeCount(const string& guessNumber)
+	{
+		int result = 0;
+		for (char num : guessNumber)
+		{
+			if (num >= '0' && num <= '3') result++;
+		}
+		return result;
+	}
+
+	int getStrikeCount(const string& guessNumber)
+	{
+		int result = 0;
+		for (int idx = 0; idx < MAX_LENGTH; idx++)
+		{
+			if (guessNumber[idx] == target[idx]) result++;
+		}
+		return result;
+	}
+
+	static const int MAX_LENGTH = 3;
+	string target;
 };

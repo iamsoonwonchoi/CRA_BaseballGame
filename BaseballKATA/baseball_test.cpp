@@ -4,7 +4,7 @@
 class BaseballFixture : public testing::Test
 {
 public:
-	void assertIllegalArgument(string guessNumber)
+	void assertIllegalArgument(const string& guessNumber)
 	{
 		try
 		{
@@ -17,6 +17,16 @@ public:
 		}
 	}
 
+	void checkGuess(const string& guessNumber, bool expected_solved, int expected_strike, int expected_ball)
+	{
+		GuessResult result = game.guess(guessNumber);
+
+		EXPECT_TRUE(expected_solved == result.solved);
+		EXPECT_EQ(expected_strike, result.strikes);
+		EXPECT_EQ(expected_ball, result.balls);
+	}
+
+private:
 	Baseball game{ "123" };
 };
 
@@ -29,11 +39,21 @@ TEST_F(BaseballFixture, ThrowExceptionWhenInvalidCase)
 
 TEST_F(BaseballFixture, ReturnSolvedResultIfMatchedNumber)
 {
-	GuessResult result = game.guess("123");
+	checkGuess("123", true, 3, 0);
+}
 
-	EXPECT_TRUE(result.solved);
-	EXPECT_EQ(3, result.strikes);
-	EXPECT_EQ(0, result.balls);
+TEST_F(BaseballFixture, Case_TwoStrike)
+{
+	checkGuess("523", false, 2, 0);
+	checkGuess("129", false, 2, 0);
+	checkGuess("173", false, 2, 0);
+}
+
+TEST_F(BaseballFixture, Case_OneStrikeTwoBall)
+{
+	checkGuess("321", false, 1, 2);
+	checkGuess("213", false, 1, 2);
+	checkGuess("132", false, 1, 2);
 }
 
 int main()
